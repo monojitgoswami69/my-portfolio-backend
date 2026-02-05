@@ -1,0 +1,156 @@
+[
+    {
+        "name": "Project Alpha",
+        "description": "A placeholder project description showcasing the card layout and design.",
+        "longDescription": "This is a detailed placeholder description for Project Alpha. It demonstrates how the modal displays longer content, including multiple paragraphs and formatting.\n\nThe project showcases various technologies and features that would typically be included in a real project portfolio entry.",
+        "techStack": [
+            "Technology 1",
+            "Technology 2",
+            "Technology 3",
+            "Technology 4",
+            "Technology 5"
+        ],
+        "imageUrl": "https://picsum.photos/600/400?grayscale&random=1",
+        "screenshots": [],
+        "githubUrl": "#",
+        "demoUrl": "#",
+        "status": "Completed",
+        "features": [
+            "Feature placeholder 1",
+            "Feature placeholder 2",
+            "Feature placeholder 3",
+            "Feature placeholder 4"
+        ],
+        "challenges": "Placeholder text describing the challenges faced during development.",
+        "learnings": "Placeholder text describing key learnings from this project.",
+        "category": "Category A",
+        "featured": true
+    },
+    {
+        "name": "Project Beta",
+        "description": "Another placeholder project to demonstrate the grid layout.",
+        "longDescription": "This is a detailed placeholder description for Project Beta. It shows how the modal handles different content lengths and displays project information in an organized manner.\n\nMultiple sections are available to showcase different aspects of the project.",
+        "techStack": [
+            "Technology A",
+            "Technology B",
+            "Technology C",
+            "Technology D"
+        ],
+        "imageUrl": "https://picsum.photos/600/400?grayscale&random=2",
+        "screenshots": [],
+        "githubUrl": "#",
+        "demoUrl": "",
+        "status": "In Progress",
+        "features": [
+            "Feature placeholder 1",
+            "Feature placeholder 2",
+            "Feature placeholder 3"
+        ],
+        "challenges": "Placeholder text describing the challenges faced during development.",
+        "learnings": "Placeholder text describing key learnings from this project.",
+        "category": "Category B",
+        "featured": true
+    },
+    {
+        "name": "Project Gamma",
+        "description": "Placeholder project demonstrating card interactions and hover effects.",
+        "longDescription": "This is a detailed placeholder description for Project Gamma. It demonstrates the full modal experience with all sections populated with placeholder content.\n\nThe layout adapts to the content provided and maintains consistent styling throughout.",
+        "techStack": [
+            "Tech Stack 1",
+            "Tech Stack 2",
+            "Tech Stack 3"
+        ],
+        "imageUrl": "https://picsum.photos/600/400?grayscale&random=3",
+        "screenshots": [],
+        "githubUrl": "#",
+        "demoUrl": "#",
+        "status": "Completed",
+        "features": [
+            "Feature placeholder 1",
+            "Feature placeholder 2",
+            "Feature placeholder 3",
+            "Feature placeholder 4",
+            "Feature placeholder 5"
+        ],
+        "challenges": "Placeholder text describing the challenges faced during development.",
+        "learnings": "Placeholder text describing key learnings from this project.",
+        "category": "Category A",
+        "featured": false
+    },
+    {
+        "name": "Project Delta",
+        "description": "Placeholder project for portfolio layout demonstration.",
+        "longDescription": "This is a detailed placeholder description for Project Delta. This entry helps visualize how the portfolio looks with multiple projects displayed in the grid.\n\nEach project card maintains consistent sizing and spacing for a polished appearance.",
+        "techStack": [
+            "Framework X",
+            "Library Y",
+            "Tool Z",
+            "Platform W"
+        ],
+        "imageUrl": "https://picsum.photos/600/400?grayscale&random=4",
+        "screenshots": [],
+        "githubUrl": "#",
+        "demoUrl": "#",
+        "status": "Completed",
+        "features": [
+            "Feature placeholder 1",
+            "Feature placeholder 2",
+            "Feature placeholder 3"
+        ],
+        "challenges": "Placeholder text describing the challenges faced during development.",
+        "learnings": "Placeholder text describing key learnings from this project.",
+        "category": "Category C",
+        "featured": false
+    },
+    {
+        "name": "Project Epsilon",
+        "description": "Fifth placeholder project showcasing the portfolio design system.",
+        "longDescription": "This is a detailed placeholder description for Project Epsilon. It represents how the portfolio handles a larger number of projects while maintaining visual consistency.\n\nThe responsive grid layout adjusts based on screen size.",
+        "techStack": [
+            "Stack A",
+            "Stack B",
+            "Stack C",
+            "Stack D",
+            "Stack E",
+            "Stack F"
+        ],
+        "imageUrl": "https://picsum.photos/600/400?grayscale&random=5",
+        "screenshots": [],
+        "githubUrl": "",
+        "demoUrl": "#",
+        "status": "In Progress",
+        "features": [
+            "Feature placeholder 1",
+            "Feature placeholder 2"
+        ],
+        "challenges": "Placeholder text describing the challenges faced during development.",
+        "learnings": "Placeholder text describing key learnings from this project.",
+        "category": "Category B",
+        "featured": false
+    },
+    {
+        "name": "Project Zeta",
+        "description": "Sixth placeholder project completing the portfolio grid view.",
+        "longDescription": "This is a detailed placeholder description for Project Zeta. The final placeholder project in the grid helps demonstrate the full layout with six project cards.\n\nThis configuration provides a balanced and visually appealing portfolio presentation.",
+        "techStack": [
+            "Primary Tech",
+            "Secondary Tech",
+            "Supporting Tech"
+        ],
+        "imageUrl": "https://picsum.photos/600/400?grayscale&random=6",
+        "screenshots": [],
+        "githubUrl": "#",
+        "demoUrl": "",
+        "status": "Completed",
+        "features": [
+            "Feature placeholder 1",
+            "Feature placeholder 2",
+            "Feature placeholder 3",
+            "Feature placeholder 4"
+        ],
+        "challenges": "Placeholder text describing the challenges faced during development.",
+        "learnings": "Placeholder text describing key learnings from this project.",
+        "category": "Category A",
+        "featured": false
+    }
+]
