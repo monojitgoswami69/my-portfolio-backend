@@ -120,9 +120,9 @@ class SanitizingFormatter(logging.Formatter):
             msg = pattern.sub(replacement, msg)
         return msg
 
-handler = logging.StreamHandler()
-handler.setFormatter(SanitizingFormatter("%(asctime)s - %(levelname)s - %(message)s"))
-logging.basicConfig(level=getattr(logging, LOG_LEVEL, logging.INFO), handlers=[handler])
+log_handler = logging.StreamHandler()
+log_handler.setFormatter(SanitizingFormatter("%(asctime)s - %(levelname)s - %(message)s"))
+logging.basicConfig(level=getattr(logging, LOG_LEVEL, logging.INFO), handlers=[log_handler])
 logger = logging.getLogger("portfolio-backend")
 
 # ============================================
@@ -866,10 +866,4 @@ async def log_activity(action: str, user_id: str, resource_type: str, resource_i
     except Exception as e:
         logger.warning(f"Failed to log activity: {e}")
 
-# ============================================
-# Entry Point
-# ============================================
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run("index:app", host=HOST, port=PORT, reload=True)
+# FastAPI app is ready to be deployed
