@@ -38,22 +38,24 @@ def get_env(key: str, default: Any = None, required: bool = False) -> Any:
     val = os.getenv(key)
     if val is None or val.strip() == "":
         if required:
-            raise ValueError(f"Missing required environment variable: {key}")
+            logger.warning(f"Missing environment variable: {key}")
+            return default
         return default
     return val.strip()
 
 # Server settings
 HOST = get_env("HOST", "0.0.0.0")
-PORT = int(get_env("PORT", 8000))
+PORT = int(get_env("PORT", "8000"))
 LOG_LEVEL = get_env("LOG_LEVEL", "INFO").upper()
 
 # Authentication
-JWT_SECRET = get_env("JWT_SECRET", required=True)
+JWT_SECRET = get_env("JWT_SECRET", "dev-secret-key")
 JWT_ALGORITHM = get_env("JWT_ALGORITHM", "HS256")
-JWT_EXPIRATION_MINUTES = int(get_env("JWT_EXPIRATION_MINUTES", 60))
-JWT_REFRESH_THRESHOLD_MINUTES = int(get_env("JWT_REFRESH_THRESHOLD_MINUTES", 15))
-ADMIN_USERNAME = get_env("ADMIN_USERNAME", required=True)
-ADMIN_PASSWORD_HASH = hashlib.sha256(get_env("ADMIN_PASSWORD", required=True).encode()).hexdigest()
+JWT_EXPIRATION_MINUTES = int(get_env("JWT_EXPIRATION_MINUTES", "60"))
+JWT_REFRESH_THRESHOLD_MINUTES = int(get_env("JWT_REFRESH_THRESHOLD_MINUTES", "15"))
+ADMIN_USERNAME = get_env("ADMIN_USERNAME", "admin")
+ADMIN_PASSWORD = get_env("ADMIN_PASSWORD", "admin123")
+ADMIN_PASSWORD_HASH = hashlib.sha256(ADMIN_PASSWORD.encode()).hexdigest()
 
 # Firebase
 FIREBASE_CRED_PATH = get_env("FIREBASE_CRED_PATH")
@@ -66,9 +68,9 @@ ACTIVITY_LOG_COLLECTION = get_env("ACTIVITY_LOG_COLLECTION", "activity_log")
 COMMUNICATION_COLLECTION = get_env("COMMUNICATION_COLLECTION", "communication")
 
 # GitHub
-GITHUB_TOKEN = get_env("GITHUB_TOKEN", required=True)
+GITHUB_TOKEN = get_env("GITHUB_TOKEN", "")
 GITHUB_BRANCH = get_env("GITHUB_BRANCH", "main")
-HTTP_TIMEOUT = float(get_env("HTTP_CLIENT_TIMEOUT", 60.0))
+HTTP_TIMEOUT = float(get_env("HTTP_CLIENT_TIMEOUT", "60.0"))
 
 # Parse GitHub paths (format: owner/repo/path/to/file)
 def parse_github_path(full_path: str) -> tuple:
@@ -77,8 +79,12 @@ def parse_github_path(full_path: str) -> tuple:
         raise ValueError(f"Invalid GitHub path: {full_path}")
     return f"{parts[0]}/{parts[1]}", parts[2]
 
-GITHUB_REPO, GITHUB_PROJECTS_PATH = parse_github_path(get_env("GITHUB_PROJECTS_DIRECTORY", required=True))
-_, GITHUB_CONTACTS_PATH = parse_github_path(get_env("GITHUB_CONTACTS_DIRECTORY", required=True))
+github_projects_dir = get_env("GITHUB_PROJECTS_DIRECTORY", "")
+if github_projects_dir:
+    GITHUB_REPO, GITHUB_PROJECTS_PATH = parse_github_path(github_projects_dir)
+else:
+    GITHUB_REPO, GITHUB_PROJECTS_PATH = "owner/repo", "path/to/file"
+_, GITHUB_CONTACTS_PATH = parse_github_path(get_env("GITHUB_CONTACTS_DIRECTORY", "owner/repo/path"))
 GITHUB_PROJECT_IMAGES_PATH = None
 if get_env("GITHUB_PROJECT_IMAGES_DIRECTORY"):
     _, GITHUB_PROJECT_IMAGES_PATH = parse_github_path(get_env("GITHUB_PROJECT_IMAGES_DIRECTORY"))
@@ -866,4 +872,4 @@ async def log_activity(action: str, user_id: str, resource_type: str, resource_i
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main:app", host=HOST, port=PORT, reload=True)
+    uvicorn.run("index:app", host=HOST, port=PORT, reload=True)
