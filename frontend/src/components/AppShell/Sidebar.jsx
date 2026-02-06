@@ -11,7 +11,8 @@ import {
   X,
   FileText,
   Folder,
-  Mail
+  Mail,
+  MessageSquare
 } from 'lucide-react';
 
 const navItems = [
@@ -41,6 +42,13 @@ const navItems = [
     label: 'Contacts',
     path: '/contacts',
     icon: Mail,
+    roles: ['superuser', 'admin', 'assistant']
+  },
+  {
+    id: 'communication',
+    label: 'Communication',
+    path: '/communication',
+    icon: MessageSquare,
     roles: ['superuser', 'admin', 'assistant']
   },
   {

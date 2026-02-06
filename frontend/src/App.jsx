@@ -41,6 +41,7 @@ const DashboardPage = lazy(() => import('./pages/DashboardPage'));
 const KnowledgeBasePage = lazy(() => import('./pages/KnowledgeBasePage'));
 const ProjectsPage = lazy(() => import('./pages/ProjectsPage'));
 const ContactsPage = lazy(() => import('./pages/ContactsPage'));
+const CommunicationPage = lazy(() => import('./pages/CommunicationPage'));
 const SystemInstructionsPage = lazy(() => import('./pages/SystemInstructionsPage'));
 const UserSettingsPage = lazy(() => import('./pages/UserSettings'));
 const UnauthorizedPage = lazy(() => import('./pages/UnauthorizedPage'));
@@ -224,6 +225,12 @@ function AppContent() {
           <Route path="contacts" element={
             <PageWrapper title="Contacts">
               <ContactsPage />
+            </PageWrapper>
+          } />
+
+          <Route path="communication" element={
+            <PageWrapper title="Communication" actions={<RefreshButton eventName="refresh-communication" />}>
+              <CommunicationPage />
             </PageWrapper>
           } />
 

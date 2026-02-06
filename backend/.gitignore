@@ -1,6 +1,7 @@
 # Environment
 .env
-*.env.local
+serviceAccountKey.json
+*.json.bak
 
 # Python
 __pycache__/
@@ -11,17 +12,24 @@ __pycache__/
 venv/
 env/
 .venv/
-
-# Firebase credentials
-serviceAccountKey.json
-*.json.bak
+ENV/
 
 # IDE
 .idea/
 .vscode/
 *.swp
 *.swo
+*~
+
+# Logs
+*.log
+logs/
 
 # OS
 .DS_Store
 Thumbs.db
+
+# Build
+dist/
+build/
+*.egg-info/

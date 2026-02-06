@@ -5,7 +5,6 @@ import { ChevronDown, ChevronRight, Folder, Plus, ExternalLink, Github, Save, Tr
 import { cn } from '../utils/helpers';
 import { useToast } from '../context/ToastContext';
 import { api } from '../services/api';
-import { cachedApiCall, clearCached } from '../utils/sessionCache';
 
 // --- Full Screen Modal Component with createPortal ---
 const FullScreenModal = ({ isOpen, onClose, title, children, footer }) => {
@@ -540,11 +539,8 @@ export default function ProjectsPage() {
     const loadProjects = async (forceRefresh = false) => {
         try {
             setLoading(true);
-            if (forceRefresh) {
-                clearCached('projects_all');
-            }
             
-            const response = await cachedApiCall('projects_all', () => api.projects.get(), forceRefresh);
+            const response = await api.projects.get();
             setProjects(response.projects || []);
         } catch (error) {
             addToast({
@@ -562,7 +558,6 @@ export default function ProjectsPage() {
         try {
             setSaving(true);
             await api.projects.save(updatedProjects);
-            clearCached('projects_all'); // Clear cache after save
         } catch (error) {
             addToast({
                 action: "Error",

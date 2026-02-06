@@ -4,7 +4,6 @@ import { api } from '../services/api';
 import { useToast } from '../context/ToastContext';
 import { Save, Mail, Github, Linkedin, Twitter, RefreshCw } from 'lucide-react';
 import { cn } from '../utils/helpers';
-import { cachedApiCall, clearCached } from '../utils/sessionCache';
 
 const pageVariants = {
   initial: { opacity: 0 },
@@ -34,15 +33,21 @@ export default function ContactsPage() {
   const loadContacts = async (forceRefresh = false) => {
     setLoading(true);
     try {
-      if (forceRefresh) {
-        clearCached('contacts');
-      }
-      
-      const data = await cachedApiCall('contacts', () => api.contacts.get(), forceRefresh);
+      const data = await api.contacts.get();
       const contactData = data.contact || {
         email: '',
-        socials: { github: '', linkedin: '', twitter: '' }
+        socials: {
+          github: '',
+          linkedin: '',
+          twitter: ''
+        }
       };
+      
+      // Ensure socials object has all required fields
+      if (!contactData.socials) {
+        contactData.socials = { github: '', linkedin: '', twitter: '' };
+      }
+      
       setContact(contactData);
       setOriginalContact(contactData);
     } catch (err) {
@@ -56,7 +61,6 @@ export default function ContactsPage() {
     setSaving(true);
     try {
       await api.contacts.save(contact);
-      clearCached('contacts'); // Clear cache after save
       setOriginalContact(contact);
       showSuccess('Contacts saved successfully');
     } catch (err) {
@@ -73,7 +77,7 @@ export default function ContactsPage() {
   const handleSocialChange = (platform, value) => {
     setContact({
       ...contact,
-      socials: { ...contact.socials, [platform]: value }
+      socials: { ...(contact.socials || {}), [platform]: value }
     });
   };
 
@@ -159,7 +163,7 @@ export default function ContactsPage() {
               </label>
               <input
                 type="url"
-                value={contact.socials.github}
+                value={contact.socials?.github || ''}
                 onChange={(e) => handleSocialChange('github', e.target.value)}
                 placeholder="https://github.com/username"
                 className="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
@@ -174,7 +178,7 @@ export default function ContactsPage() {
               </label>
               <input
                 type="url"
-                value={contact.socials.linkedin}
+                value={contact.socials?.linkedin || ''}
                 onChange={(e) => handleSocialChange('linkedin', e.target.value)}
                 placeholder="https://linkedin.com/in/username"
                 className="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
@@ -189,7 +193,7 @@ export default function ContactsPage() {
               </label>
               <input
                 type="url"
-                value={contact.socials.twitter}
+                value={contact.socials?.twitter || ''}
                 onChange={(e) => handleSocialChange('twitter', e.target.value)}
                 placeholder="https://twitter.com/username"
                 className="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"

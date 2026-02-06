@@ -61,7 +61,14 @@ export const AuthProvider = ({ children }) => {
       const data = await response.json();
 
       if (response.ok && data.status === 'success') {
-        return { success: true, user: data.user };
+        // Include the token in the user object (token is at top level of response)
+        return {
+          success: true,
+          user: {
+            ...data.user,
+            token: data.token  // Token is at data.token, not data.user.token
+          }
+        };
       } else {
         return { success: false, error: data.detail || 'Login failed', status: response.status };
       }

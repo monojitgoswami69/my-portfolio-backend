@@ -6,7 +6,6 @@ import { Save, FileText, RefreshCw } from 'lucide-react';
 import { LoadingSpinner } from '../components/UI/LoadingSpinner';
 import { Modal } from '../components/UI/Modal';
 import { cn } from '../utils/helpers';
-import { cachedApiCall, clearCached } from '../utils/sessionCache';
 
 const pageVariants = {
   initial: { opacity: 0 },
@@ -35,11 +34,7 @@ export default function SystemInstructionsPage() {
   const loadInstructions = async (forceRefresh = false) => {
     setLoading(true);
     try {
-      if (forceRefresh) {
-        clearCached('system_instructions');
-      }
-      
-      const data = await cachedApiCall('system_instructions', () => api.systemInstructions.get(), forceRefresh);
+      const data = await api.systemInstructions.get();
       const content = data.content || '';
       setInstructions(content);
       setOriginalInstructions(content);
@@ -54,7 +49,6 @@ export default function SystemInstructionsPage() {
     setSaving(true);
     try {
       await api.systemInstructions.save(instructions);
-      clearCached('system_instructions'); // Clear cache after save
       setOriginalInstructions(instructions);
       showSuccess('Instructions saved successfully');
     } catch (err) {

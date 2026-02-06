@@ -4,15 +4,14 @@ import { ChevronDown, ChevronRight, User, Code, Folder, Mail, FileText, Save, Ch
 import { cn } from '../utils/helpers';
 import { useToast } from '../context/ToastContext';
 import { api } from '../services/api';
-import { cachedApiCall, clearCached } from '../utils/sessionCache';
 
 // --- Default Content ---
 const DEFAULT_CONTENT = {
-  'about-me': '',
-  'tech-stack': '',
+  'about_me': '',
+  'tech_stack': '',
   'projects': '',
-  'contacts': '',
-  'miscellaneous': ''
+  'contact': '',
+  'misc': ''
 };
 
 // --- Expandable Section Component ---
@@ -138,11 +137,7 @@ export default function KnowledgeBasePage() {
   const loadAllCategories = async (forceRefresh = false) => {
     setLoading(true);
     try {
-      if (forceRefresh) {
-        clearCached('knowledge_base_all');
-      }
-      
-      const data = await cachedApiCall('knowledge_base_all', () => api.chatbotKnowledge.getAll(), forceRefresh);
+      const data = await api.knowledge.getAll();
       if (data.status === 'success' && data.categories) {
         const content = {};
         for (const [key, value] of Object.entries(data.categories)) {
@@ -164,8 +159,7 @@ export default function KnowledgeBasePage() {
 
   const handleSaveSection = async (id, newContent) => {
     try {
-      await api.chatbotKnowledge.save(id, newContent);
-      clearCached('knowledge_base_all'); // Clear cache after save
+      await api.knowledge.save(id, newContent);
       setSectionContent(prev => ({
         ...prev,
         [id]: newContent
@@ -231,17 +225,17 @@ export default function KnowledgeBasePage() {
         <ExpandableSection
           title="About Me"
           icon={User}
-          id="about-me"
+          id="about_me"
           defaultOpen={false}
-          content={sectionContent['about-me']}
+          content={sectionContent['about_me']}
           onSave={handleSaveSection}
         />
 
         <ExpandableSection
           title="Tech Stack"
           icon={Code}
-          id="tech-stack"
-          content={sectionContent['tech-stack']}
+          id="tech_stack"
+          content={sectionContent['tech_stack']}
           onSave={handleSaveSection}
         />
 
@@ -256,16 +250,16 @@ export default function KnowledgeBasePage() {
         <ExpandableSection
           title="Contacts"
           icon={Mail}
-          id="contacts"
-          content={sectionContent['contacts']}
+          id="contact"
+          content={sectionContent['contact']}
           onSave={handleSaveSection}
         />
 
         <ExpandableSection
           title="Miscellaneous"
           icon={FileText}
-          id="miscellaneous"
-          content={sectionContent['miscellaneous']}
+          id="misc"
+          content={sectionContent['misc']}
           onSave={handleSaveSection}
         />
       </div>

@@ -4,7 +4,6 @@ import { api } from '../services/api';
 import { Clock, AlertCircle, RefreshCw } from 'lucide-react';
 import { LoadingSpinner } from '../components/UI/LoadingSpinner';
 import { Modal } from '../components/UI/Modal';
-import { cachedApiCall, clearCached } from '../utils/sessionCache';
 
 const generateFallbackWeeklyData = () => {
   const data = [];
@@ -94,20 +93,29 @@ function ActivityItem({ action, timestamp, actor, index, meta }) {
   // Format action text with filename if available
   const formatAction = () => {
     const filename = meta?.filename;
-
-    if (!filename) return action;
-
-    // Map backend action names to user-friendly text with filename
+    
+    // Map backend action names to user-friendly text
     const actionMap = {
-      'document_uploaded': `Uploaded: ${filename}`,
-      'document_archived': `Archived: ${filename}`,
-      'document_restored': `Restored: ${filename}`,
-      'document_deleted': `Deleted: ${filename}`,
-      'document_edited': `Edited: ${filename}`,
-      'document_downloaded': `Downloaded: ${filename}`,
+      // Auth actions
+      'login': 'Logged in',
+      'logout': 'Logged out',
+      
+      // Resource actions
+      'projects_updated': 'Updated projects',
+      'contacts_updated': 'Updated contacts',
+      'knowledge_updated': 'Updated knowledge base',
+      'system_instructions_updated': 'Updated system instructions',
+      
+      // Document actions (with filename)
+      'document_uploaded': filename ? `Uploaded: ${filename}` : 'Uploaded document',
+      'document_archived': filename ? `Archived: ${filename}` : 'Archived document',
+      'document_restored': filename ? `Restored: ${filename}` : 'Restored document',
+      'document_deleted': filename ? `Deleted: ${filename}` : 'Deleted document',
+      'document_edited': filename ? `Edited: ${filename}` : 'Edited document',
+      'document_downloaded': filename ? `Downloaded: ${filename}` : 'Downloaded document',
     };
 
-    return actionMap[action] || `${action}: ${filename}`;
+    return actionMap[action] || action.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
   };
 
   return (
@@ -186,33 +194,28 @@ export default function DashboardPage() {
     setLoading(true);
     setError(null);
     try {
-      if (forceRefresh) {
-        clearCached('dashboard_weekly');
-        clearCached('dashboard_activity');
-      }
-      
       const [weeklyResponse, activityResponse] = await Promise.all([
-        cachedApiCall('dashboard_weekly', () => api.dashboard.getWeekly(), forceRefresh),
-        cachedApiCall('dashboard_activity', () => api.dashboard.getActivity(10), forceRefresh)
+        api.dashboard.getWeekly(),
+        api.dashboard.getActivity(10)
       ]);
 
       // Format weekly data from API response
       let formattedWeeklyData = generateFallbackWeeklyData();
-      if (weeklyResponse?.weekly) {
+      if (weeklyResponse?.weekly && weeklyResponse.weekly.length > 0) {
         // New format: weekly metrics from dedicated collection
         formattedWeeklyData = weeklyResponse.weekly.map(item => ({
           date: formatChartDate(item.date || item.day),
           fullDate: item.fullDate || item.date || new Date().toISOString(),
           queries: item.queries || item.count || item.hits || 0
         }));
-      } else if (weeklyResponse?.weeklyActivity) {
+      } else if (weeklyResponse?.weeklyActivity && weeklyResponse.weeklyActivity.length > 0) {
         // Legacy format support
         formattedWeeklyData = weeklyResponse.weeklyActivity.map(item => ({
           date: formatChartDate(item.date || item.day),
           fullDate: item.date || new Date().toISOString(),
           queries: item.count || item.queries || 0
         }));
-      } else if (weeklyResponse?.data) {
+      } else if (weeklyResponse?.data && weeklyResponse.data.length > 0) {
         formattedWeeklyData = weeklyResponse.data.map(item => ({
           date: formatChartDate(item.date),
           fullDate: item.date,
@@ -349,10 +352,10 @@ export default function DashboardPage() {
             activityData.slice(0, 5).map((activity, index) => (
               <ActivityItem
                 key={activity.id || index}
-                action={activity.action || activity.message}
+                action={activity.action || activity.type || activity.message}
                 timestamp={activity.timestamp || activity.created_at}
-                actor={activity.actor || activity.user || 'System'}
-                meta={activity.meta || {}}
+                actor={activity.actor || activity.user_id || activity.user || 'System'}
+                meta={activity.meta || activity.details || {}}
                 index={index}
               />
             ))
@@ -373,10 +376,10 @@ export default function DashboardPage() {
           {activityData.map((activity, index) => (
             <ActivityItem
               key={activity.id || index}
-              action={activity.action || activity.message}
+              action={activity.action || activity.type || activity.message}
               timestamp={activity.timestamp || activity.created_at}
-              actor={activity.actor || activity.user || 'System'}
-              meta={activity.meta || {}}
+              actor={activity.actor || activity.user_id || activity.user || 'System'}
+              meta={activity.meta || activity.details || {}}
               index={index}
             />
           ))}

@@ -1,28 +1,10 @@
-# Web Framework & Server
 fastapi
 uvicorn[standard]
 python-multipart
-
-# HTTP & Network
 httpx
-aiohttp
-
-# Authentication & Security
 PyJWT
 python-dotenv
-
-# Rate Limiting
-slowapi
-
-# Firebase & Firestore
 google-cloud-firestore
-firebase-admin
-
-# AI / LLM
-google-genai
-
-# Data Validation
 pydantic
-
-# Image Processing
-Pillow>=10.0.0
+email-validator
+Pillow
